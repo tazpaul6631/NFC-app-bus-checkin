@@ -26,7 +26,6 @@ npx cap sync
 implementation fileTree(dir: 'src/main/libs', include: ['*.jar', '*.aar'])
 implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 
-.env.production → https://ap02.jiahsin.com.vn/api
 ```bash
 npm run build
 npx cap sync android

@@ -103,7 +103,7 @@ api.interceptors.response.use(
 
     const status = error.response.status
 
-    // Token hết hạn / không hợp lệ — chỉ xóa token + về step 1, giữ offline queue
+    // Token hết hạn / không hợp lệ — clearSession (token + cache Select + step 1), giữ offline queue
     if (status === 401) {
       if (!isLoginApiRequest(error) && !isStaleUnauthorized(error, authStore.token || '')) {
         notifySessionExpiredToast(t('common.sessionExpired'), t('common.warning'))

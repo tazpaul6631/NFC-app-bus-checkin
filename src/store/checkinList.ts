@@ -249,6 +249,10 @@ export const useCheckinListStore = defineStore('checkinList', {
   }),
 
   getters: {
+    /**
+     * Đã lên xe ca hiện tại theo biển đang xem.
+     * Cộng dồn online/offline (cùng `employees` persist) đến khi kick reset → 0.
+     */
     checkedInCount(state) {
       const plate = state.activeDisplayPlate
       return state.employees.filter((e) => isOnBoardingList(e, plate)).length

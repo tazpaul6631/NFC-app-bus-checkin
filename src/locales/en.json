@@ -12,18 +12,18 @@
     "password": "Password",
     "online": "Online",
     "offline": "Offline",
-    "offlineBanner": "You are offline. The app still works normally and will sync data automatically when the network is back.",
-    "sessionExpired": "Your session has expired. You can still check in; scan QR again to sync.",
-    "serverMaintenance": "Server is under maintenance or unavailable. Please contact IT and try again later.",
+    "offlineBanner": "You are offline. The system still works normally and will send data automatically when the network is back.",
+    "sessionExpired": "Your session has expired. Please scan the vehicle QR code to log in again and sync.",
+    "serverMaintenance": "The server is under maintenance or has an error. Please contact IT and try again later.",
     "search": "Search..."
   },
   "home": {
     "title": "Home",
-    "subtitle": "VIP Dashboard"
+    "subtitle": "VIP dashboard"
   },
   "login": {
-    "title": "Sign in",
-    "submit": "Sign in"
+    "title": "System login",
+    "submit": "Login"
   },
   "changePassword": {
     "menu": "Change password",
@@ -35,22 +35,22 @@
     "required": "Please fill in all fields",
     "mismatch": "Password confirmation does not match",
     "tooShort": "New password must be at least 6 characters",
-    "successTitle": "Password updated",
-    "successDetail": "Your password has been changed successfully",
+    "successTitle": "Password changed successfully",
+    "successDetail": "Your password has been updated",
     "failed": "Unable to change password"
   },
   "settings": {
     "title": "Settings",
     "nfc": {
       "title": "NFC",
-      "subtitle": "Scan Mifare / NFC cards",
+      "subtitle": "NFC card scan test",
       "start": "Start NFC scan",
       "stop": "Stop scan",
       "openSettings": "Open NFC settings",
-      "scanningToast": "Ready — hold a card near the device",
-      "lastScan": "Last card",
+      "scanningToast": "Ready — hold the card near the device",
+      "lastScan": "Last scanned card",
       "code": "Code",
-      "type": "Type",
+      "type": "Card type",
       "uid": "UID",
       "statusMap": {
         "ready": "Ready",
@@ -61,61 +61,62 @@
         "unknown": "Unknown"
       },
       "errors": {
-        "NFC_WEB_ONLY": "NFC only works on a real Android device with NFC.",
+        "NFC_WEB_ONLY": "NFC only works on a real Android device with an NFC chip.",
         "NFC_UNSUPPORTED": "This device has no NFC hardware.",
-        "NFC_DISABLED": "NFC is turned off. Enable it in system settings.",
-        "UID_NOT_4_BYTE": "UID is {length} bytes — card-number formula needs a 4-byte tag.",
+        "NFC_DISABLED": "NFC is turned off. Please enable it in system settings.",
+        "UID_NOT_4_BYTE": "UID is {length} bytes — the code formula needs a 4-byte card.",
         "GENERIC": "Unable to start NFC scan"
       }
     }
   },
   "checkin": {
     "header": {
-      "title": "Employee pickup check-in"
+      "title": "Employee shuttle check-in"
     },
     "tabs": {
-      "scan": "Scan QR on vehicle",
+      "scan": "Scan vehicle QR",
       "nfc": "NFC check-in"
     },
     "scan": {
-      "title": "Employee pickup check-in",
-      "hintOnline": "Scan the QR code on the vehicle",
-      "hintOffline": "Select vehicle plate",
-      "hintSelectOnline": "If no vehicle plate, please scan the QR code on the vehicle (has Wifi or 4G)",
-      "hintSelectOffline": "If no vehicle plate, please check the network and try again",
+      "title": "Employee shuttle check-in",
+      "hintOnline": "Scan the QR code on your vehicle",
+      "hintOffline": "Select your route code",
+      "hintSelectOnline": "If there is no route code, please scan the QR code on your vehicle (needs Wi-Fi or 4G)",
+      "hintSelectOffline": "If there is no route code, please check the network and try again",
       "hintNeedQr": "Token expired. Please scan the QR code on the vehicle to log in again (needs Wi-Fi or 4G).",
       "tokenRejectedAfterLogin": "QR login succeeded, but the new token cannot be used for check-in. Please scan the QR code again.",
-      "selectPlatePlaceholder": "Select vehicle plate",
-      "doneLabel": "Vehicle plate scanned",
+      "selectPlatePlaceholder": "Select route code",
+      "routeNumberLabel": "Route number",
+      "doneLabel": "Route code scanned",
       "scanButton": "Scan QR",
       "confirmButton": "Confirm vehicle & scan NFC",
-      "changeVehicle": "Scan a different vehicle",
+      "changeVehicle": "Scan another vehicle",
       "driverLabel": "Driver",
-      "busLabel": "{seats}-seat bus",
+      "busLabel": "{seats}-seat vehicle",
       "openSettings": "Open camera permission",
-      "loginFailed": "Vehicle plate is incorrect. Please scan the QR code again.",
-      "plateListEmpty": "No vehicle plates found. Please try again.",
-      "plateListFailed": "Could not load the vehicle plate list. Please try again.",
+      "loginFailed": "Route code is incorrect. Please scan the QR code again.",
+      "plateListEmpty": "No plate list found. Please try again.",
+      "plateListFailed": "Could not load the plate list. Please try again.",
       "plateListKeepCache": "Could not load a new plate list — still using the saved list to pick a vehicle.",
       "errors": {
         "CAMERA_PERMISSION_DENIED": "Camera permission was not granted. Please allow it to scan QR codes.",
         "QR_UNSUPPORTED": "This device does not support QR scanning.",
         "MODULE_UNAVAILABLE": "Could not load the QR scanner module. Please check Google Play Services and try again.",
-        "NO_CODE": "Could not read the QR code, please try again.",
+        "NO_CODE": "Could not recognize the QR code, please try again.",
         "GENERIC": "Unable to open the camera to scan"
       }
     },
     "nfc": {
       "title": "NFC check-in",
-      "subtitle": "Have employees tap their staff card on the NFC section on the phone to record boarding.",
+      "subtitle": "Have employees tap their staff card on the NFC area of the phone to record boarding.",
       "needScan": "Please scan the vehicle QR code before checking in",
-      "needQrToken": "No login session. You can still check in; scan the vehicle QR (step 1) when you can to sync.",
-      "tokenExpiredBanner": "Token expired — you can still scan. Scan the vehicle QR (step 1) to upload data.",
+      "needQrToken": "No login session. You can still check in; scan the QR at step 1 when free to sync.",
+      "tokenExpiredBanner": "Token expired. Please scan the QR code (step 1) to log in again and upload data to the server.",
       "allDone": "All employees have checked in",
       "boarded": "boarded",
       "boardedCount": "Boarded",
       "registeredCount": "Registered",
-      "plateLabel": "Vehicle plate",
+      "plateLabel": "Route code",
       "recent": "Checked in",
       "emptyList": "No one has checked in yet",
       "emptyListHint": "Tap an NFC card or scan a code to add to the list",
@@ -127,7 +128,7 @@
       "hintDisabled": "Tap the button to enable NFC in system settings",
       "hintUnsupported": "This device does not support NFC",
       "barcode": "Scan code",
-      "manual": "Manual",
+      "manual": "Enter code",
       "manualPlaceholder": "Employee ID",
       "submit": "Submit",
       "toastConnected": "NFC connected — ready to check in",
@@ -144,7 +145,7 @@
       "errors": {
         "NFC_WEB_ONLY": "NFC only works on a real device.",
         "NFC_UNSUPPORTED": "This device has no NFC hardware.",
-        "NFC_DISABLED": "NFC is turned off. Enable it in system settings.",
+        "NFC_DISABLED": "NFC is turned off. Please enable it in system settings.",
         "GENERIC": "Unable to connect NFC"
       }
     },
@@ -163,10 +164,10 @@
       "unknownPlate": "Unknown plate"
     },
     "kick": {
-      "reminderTitle": "Sync reminder",
-      "reminderBody": "Please sync offline data before check-in time.",
-      "reminderModalText": "{count} item(s) not synced yet. Please sync before check-in.",
-      "kickTitle": "Check-in time",
+      "reminderTitle": "Data sync reminder",
+      "reminderBody": "Please send offline data before check-in time.",
+      "reminderModalText": "{count} item(s) not sent yet. Please sync before check-in time.",
+      "kickTitle": "It is check-in time",
       "kickBody": "The display list has been refreshed."
     },
     "list": {
@@ -176,19 +177,19 @@
     },
     "loading": {
       "default": "Processing...",
-      "scan": "Detecting vehicle...",
-      "nfc": "Recording check-in..."
+      "scan": "Recognizing vehicle...",
+      "nfc": "Recording..."
     }
   },
   "error": {
     "LOGIN_SUCCESS": "Login successful",
-    "VEHICLE_NOT_FOUND": "Vehicle not found",
-    "GET_DATA_SUCCESS": "Get data successful",
+    "VEHICLE_NOT_FOUND": "Route code not found",
+    "GET_DATA_SUCCESS": "Data retrieved successfully",
     "INVALID_ACCESS_TOKEN": "Invalid access token",
-    "CREATE_SUCCESS": "Create successful",
-    "CARD_NOT_FOUND": "Card not found",
+    "CREATE_SUCCESS": "Created successfully",
+    "CARD_NOT_FOUND": "Employee card not found",
     "EMPLOYEE_NOT_FOUND": "Employee not found",
-    "CHECK_IN_NOT_AVAILABLE": "Check-in not available",
+    "CHECK_IN_NOT_AVAILABLE": "You are not on the current shift",
     "ALREADY_CHECKED_IN": "You have already checked in"
   }
 }

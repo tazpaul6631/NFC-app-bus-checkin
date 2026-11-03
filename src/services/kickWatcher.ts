@@ -1,6 +1,7 @@
 import {
   getReminderTimes,
   getVNMinutesNow,
+  isCheckinAtInCurrentKickWindow,
   isDisplayStaleForKick,
   KICK_TIMES,
   toMinutesList,
@@ -18,10 +19,13 @@ export function applyKickReset() {
 
 /**
  * Catch-up: đã qua mốc đá mà ca cũ chưa reset (list hoặc trip).
- * List rỗng nhưng trip còn giờ ca trước → vẫn về step 1.
+ * Chỉ gỡ NV ngoài cửa sổ ca — giữ NV ca hiện tại để checkedInCount
+ * cộng dồn online/offline đến khi kick mốc (applyKickReset → 0).
+ * Trip stale / hết NV ca hiện tại → về step 1.
  */
 export function runKickCatchUp(): boolean {
   const store = useCheckinListStore()
+  const stepStore = useCheckinStepStore()
   if (!store.employees.length && !store.tripStartedAt) return false
 
   const stale = isDisplayStaleForKick(
@@ -30,7 +34,20 @@ export function runKickCatchUp(): boolean {
   )
   if (!stale) return false
 
-  applyKickReset()
+  const kept = store.employees.filter((e) => isCheckinAtInCurrentKickWindow(e.checkinAt))
+  store.employees = kept
+
+  const tripStale =
+    !!store.tripStartedAt && !isCheckinAtInCurrentKickWindow(store.tripStartedAt)
+  if (tripStale || !kept.length) {
+    store.tripStartedAt = null
+  }
+  if (!kept.length) {
+    store.reminderModalVisible = false
+  }
+
+  // Ca mới / còn sót dữ liệu cũ: về step 1 (giống kick), nhưng không xóa NV cửa sổ hiện tại
+  stepStore.reset()
   return true
 }
 

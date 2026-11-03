@@ -38,17 +38,26 @@
                   </div>
                 </div>
 
-                <Select v-if="offlineVehicleOptions" v-model="selectedPlate" :options="offlineVehicleOptions"
+                <Select v-if="offlineVehicleOptions.length" v-model="selectedPlate" :options="offlineVehicleOptions"
                   option-label="label" option-value="value" :placeholder="t('checkin.scan.selectPlatePlaceholder')"
-                  class="offline-plate-select" size="large" :disabled="scanning || showTokenExpiredBanner"
-                  @update:model-value="onOfflinePlateSelect" filter />
-                <small v-if="offlineVehicleOptions" class="scan-hint-text"><strong><span class="text-danger">*</span>
+                  class="offline-plate-select w-full" size="large" :disabled="scanning || showTokenExpiredBanner"
+                  @update:model-value="onOfflinePlateSelect" filter>
+                  <template #value="{ value, placeholder }">
+                    <span>{{ displayPlateLabel(value) || placeholder }}</span>
+                  </template>
+                  <template #option="{ option }">
+                    <span>{{ t('checkin.scan.routeNumberLabel') }}: {{ option.label }}</span>
+                  </template>
+                </Select>
+                <small v-if="offlineVehicleOptions.length" class="scan-hint-text"><strong><span
+                      class="text-danger">*</span>
                     {{
                       showTokenExpiredBanner ?
                         t('checkin.scan.hintNeedQr') :
                         authStore.isOnline ?
                           t('checkin.scan.hintSelectOnline') : t('checkin.scan.hintSelectOffline')
                     }}</strong></small>
+
                 <Button v-if="authStore.isOnline" :label="t('checkin.scan.scanButton')" size="large" :loading="scanning"
                   @click="handleScanClick" class="scan-button">
                   <template #icon><i class="pi pi-qrcode" style="font-size: 2rem;" /></template>
@@ -67,7 +76,7 @@
                   <div class="nfc-plate-row">
                     <div class="nfc-plate-text">
                       <span class="nfc-plate-label">{{ t('checkin.nfc.plateLabel') }}</span>
-                      <span class="plate-tag compact">{{ vehicle.plate }}</span>
+                      <span class="plate-tag compact">{{ activeVehicleLabel }}</span>
                     </div>
                     <div class="nfc-action-btns">
                       <span class="chip-btn-wrap">
@@ -211,6 +220,7 @@ import { speakImportantText } from '@/services/ttsService'
 import { resolveApiError, resolveApiMessage } from '@/utils/apiMessage'
 import { runKickCatchUp } from '@/services/kickWatcher'
 import { syncCheckInRecord, syncOfflineQueue, type SyncRecordKind } from '@/services/offlineSyncService'
+import { formatVehicleLabel } from '@/services/vehiclePlateCache'
 
 const { t } = useI18n()
 const toast = useToast()
@@ -318,6 +328,22 @@ const vehicle = reactive({
   plate: authStore.numberPlate || ''
 })
 
+watch(showTokenExpiredBanner, (expired) => {
+  if (!expired) return
+  selectedPlate.value = null
+  vehicle.plate = ''
+})
+
+function displayPlateLabel(plate: string | null | undefined) {
+  const key = String(plate || '').trim()
+  if (!key) return ''
+  const opt = offlineVehicleOptions.value.find((o) => o.value === key)
+  if (opt?.label) return opt.label
+  return formatVehicleLabel(authStore.findCachedVehicle(key)?.routeNumber, key)
+}
+
+const activeVehicleLabel = computed(() => displayPlateLabel(vehicle.plate))
+
 function proceedToNfcStep() {
   completedSteps.add('1')
   runKickCatchUp()
@@ -416,6 +442,7 @@ async function loginWithNumberPlate(numberPlate: string) {
       numberPlate: body.data.numberPlate || plate,
       accessToken: body.data.accessToken,
       expiresAt: body.data.expiresAt,
+      routeNumber: body.data.routeNumber,
       numOfSeat: body.data.numOfSeat,
       registeredCount: body.data.registeredCount,
     })
