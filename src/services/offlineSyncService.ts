@@ -75,27 +75,32 @@ export async function syncCheckInRecord(
     const ids = [id]
     checkinList.markQueueSyncing(ids)
 
-    const numberPlate = (emp.numberPlate || authStore.numberPlate || '').trim()
+    const routeNumber = authStore.resolveRouteNumber(emp.numberPlate || authStore.numberPlate)
     const employeeId = (emp.employeeId || emp.code || '').trim()
     const cardNumber = (emp.cardNumber || '').trim()
 
+    if (!routeNumber) {
+      checkinList.revertQueueSyncing(ids, false)
+      return 'skipped'
+    }
+
     try {
       const { data: body } = employeeId
-        ? await employeeCheckInApi.createCheckInByEmployeeId({ numberPlate, employeeId })
-        : await employeeCheckInApi.createCheckInByCardId({ numberPlate, cardNumber })
+        ? await employeeCheckInApi.createCheckInByEmployeeId({ routeNumber, employeeId })
+        : await employeeCheckInApi.createCheckInByCardId({ routeNumber, cardNumber })
 
       if (isAlreadyRecorded(body)) {
         checkinList.applySyncResults(
           body.data
             ? [body.data]
             : [
-                {
-                  employeeId,
-                  employeeName: emp.name || employeeId || cardNumber,
-                  cardNumber,
-                  checkInTime: emp.checkinAt,
-                },
-              ],
+              {
+                employeeId,
+                employeeName: emp.name || employeeId || cardNumber,
+                cardNumber,
+                checkInTime: emp.checkinAt,
+              },
+            ],
           ids,
         )
         return 'already'
@@ -136,13 +141,13 @@ export async function syncCheckInRecord(
           data
             ? [data]
             : [
-                {
-                  employeeId,
-                  employeeName: emp.name || employeeId || cardNumber,
-                  cardNumber,
-                  checkInTime: emp.checkinAt,
-                },
-              ],
+              {
+                employeeId,
+                employeeName: emp.name || employeeId || cardNumber,
+                cardNumber,
+                checkInTime: emp.checkinAt,
+              },
+            ],
           ids,
         )
         return 'already'

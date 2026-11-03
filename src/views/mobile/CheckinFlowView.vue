@@ -414,9 +414,9 @@ function openOfflineSyncPrompt() {
   syncModalVisible.value = true
 }
 
-async function loginWithNumberPlate(numberPlate: string) {
-  const plate = numberPlate.trim()
-  if (!plate) {
+async function loginWithRouteNumber(routeNumberQr: string) {
+  const routeNumber = routeNumberQr.trim()
+  if (!routeNumber) {
     toast.add({
       severity: 'warn',
       summary: t('checkin.scan.title'),
@@ -427,7 +427,7 @@ async function loginWithNumberPlate(numberPlate: string) {
   }
 
   try {
-    const { data: body } = await driverLoginApi.postDriverLogin({ numberPlate: plate })
+    const { data: body } = await driverLoginApi.postDriverLogin({ routeNumber })
     if (!body?.success || !body.data?.accessToken) {
       toast.add({
         severity: 'warn',
@@ -438,15 +438,16 @@ async function loginWithNumberPlate(numberPlate: string) {
       return false
     }
 
+    const numberPlate = (body.data.numberPlate || '').trim() || routeNumber
     authStore.setDriverSession({
-      numberPlate: body.data.numberPlate || plate,
+      numberPlate,
       accessToken: body.data.accessToken,
       expiresAt: body.data.expiresAt,
-      routeNumber: body.data.routeNumber,
+      routeNumber: body.data.routeNumber ?? routeNumber,
       numOfSeat: body.data.numOfSeat,
       registeredCount: body.data.registeredCount,
     })
-    vehicle.plate = body.data.numberPlate || plate
+    vehicle.plate = numberPlate
 
     // Token đã OK — vào step 2 dù getVehicles fail (giữ cache select cũ)
     await fetchAndCacheNumberPlates()
@@ -532,7 +533,7 @@ async function handleScanClick() {
       hideLoader()
       return
     }
-    const ok = await loginWithNumberPlate(plate)
+    const ok = await loginWithRouteNumber(plate)
     if (!ok) hideLoader()
   } finally {
     scanning.value = false

@@ -77,6 +77,13 @@ export const useAuthStore = defineStore('auth', {
       return this.cachedVehicles.find((v) => v.numberPlate === key)
     },
 
+    /** Số tuyến gửi API (routeNumber) — theo biển record hoặc xe đang active. */
+    resolveRouteNumber(plate?: string) {
+      const key = (plate || this.numberPlate || '').trim()
+      if (!key) return ''
+      return (this.findCachedVehicle(key)?.routeNumber || '').trim()
+    },
+
     upsertCachedVehicle(vehicle: CachedVehicle) {
       const plate = vehicle.numberPlate.trim()
       if (!plate) return
